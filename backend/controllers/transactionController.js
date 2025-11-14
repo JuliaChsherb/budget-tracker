@@ -1,12 +1,13 @@
 const asyncHandler = require('express-async-handler')
 
 const Transaction = require('../models/transactionModel')
+const User = require('../models/userModel')
 
 // @desc    Get transactions
 // @route   GET /api/transactions
 // @access  Private
 const getTransactions = asyncHandler(async (req, res) => {
-    const transactions = await Transaction.find()
+    const transactions = await Transaction.find({user: req.user.id})
 
     res.status(200).json(transactions)
 })
@@ -21,7 +22,8 @@ const createTransaction = asyncHandler(async (req, res) => {
     }
 
     const transaction = await Transaction.create({
-        text: req.body.text
+        text: req.body.text,
+        user: req.user.id
     })
 
     res.status(200).json(transaction)
@@ -38,6 +40,20 @@ const transaction = await Transaction.findById(req.params.id)
         throw new Error('Transaction not found')
     }
 
+    const user = await User.findById(req.user.id)
+
+    // Check for user
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    // Make sure the logged in user matches the transaction user
+    if(transaction.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('User not authorized')
+    }
+
     const updatedTransaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
     res.status(200).json(updatedTransaction)
@@ -52,6 +68,20 @@ const transaction = await Transaction.findById(req.params.id)
     if(!transaction) {
         res.status(400)
         throw new Error('Transaction not found')
+    }
+
+    const user = await User.findById(req.user.id)
+
+    // Check for user
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    // Make sure the logged in user matches the transaction user
+    if(transaction.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('User not authorized')
     }
 
     await transaction.deleteOne()

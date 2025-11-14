@@ -6,9 +6,10 @@ const { getTransactions,
         deleteTransaction
     } = require('../controllers/transactionController')
 
-router.route('/').get(getTransactions).post(createTransaction)
+const {protect} = require('../middleware/authMiddleware')
 
-router.route('/:id').delete(deleteTransaction).put(updateTransaction)
+router.route('/').get(protect, getTransactions).post(protect, createTransaction)
+router.route('/:id').delete(protect, deleteTransaction).put(protect, updateTransaction)
 
 module.exports = router
 
