@@ -44,7 +44,7 @@ function Dashboard() {
     <TransactionForm />
 
     <section className="content">
-      {transactions.lenght > 0 ? (
+      {transactions.length > 0 ? (
         <div className="transactions">
           {transactions.map((transaction) => (
             <TransactionItem key = {transaction._id} transaction = {transaction}/>

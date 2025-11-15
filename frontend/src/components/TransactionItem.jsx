@@ -2,7 +2,7 @@ function TransactionItem({transaction}) {
     return (
         <div className="transaction">
             <div>
-                {new Date(transaction.createdAt).toLocaleString('')}
+                {new Date(transaction.createdAt).toLocaleString('en-US')}
             </div>
             <h2>
                 {transaction.text}
