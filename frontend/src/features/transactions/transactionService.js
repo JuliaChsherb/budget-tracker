@@ -28,9 +28,23 @@ const getTransactions = async(token) => {
     return response.data
 }
 
+// Delete user transaction
+const deleteTransaction = async(transactionId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.delete(API_URL + transactionId, config)
+
+    return response.data
+}
+
 const transactionService = {
     createTransaction,
-    getTransactions
+    getTransactions,
+    deleteTransaction
 }
 
 export default transactionService
