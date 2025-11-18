@@ -1,12 +1,12 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import transactionService from './transactionService'
 
-const initialState ={
-transactions: [],
-isError: false,
-isSuccess: false,
-isLoading: false,
-message: ''
+const initialState = {
+  transactions: [],
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: ''
 }
 
 // Create new transaction
@@ -20,7 +20,7 @@ export const createTransaction = createAsyncThunk('transaction/create', async (t
     }
 })
 
-// GEt user transactions
+// Get user transactions
 export const getTransactions = createAsyncThunk('transactions/getAll', async (_, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
@@ -57,6 +57,9 @@ export const transactionSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.transactions.push(action.payload)
+                console.log('=== SLICE DEBUG: Transaction added ===')
+                console.log('New transaction:', action.payload)
+                console.log('Total transactions now:', state.transactions.length)
             })
             .addCase(createTransaction.rejected, (state, action) => {
                 state.isLoading = false
@@ -94,5 +97,5 @@ export const transactionSlice = createSlice({
     }
 })
 
-export const {reset} = transactionSlice.actions
+export const { reset } = transactionSlice.actions
 export default transactionSlice.reducer

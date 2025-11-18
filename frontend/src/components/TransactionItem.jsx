@@ -5,14 +5,23 @@ function TransactionItem({transaction}) {
     const dispatch = useDispatch()
 
     return (
-        <div className="transaction">
-            <div>
-                {new Date(transaction.createdAt).toLocaleString('en-US')}
+        <div className={`transaction ${transaction.type}`}>
+            <div className="transaction-details">
+                <h4>{transaction.text}</h4>
+                <p>
+                    {new Date(transaction.createdAt).toLocaleString('en-US')} • 
+                    {transaction.type === 'income' ? 'Income' : 'Expense'}
+                </p>
             </div>
-            <h2>
-                {transaction.text}
-                <button onClick={() => dispatch(deleteTransaction(transaction._id))} className="close">X</button>
-            </h2>
+            <div className={`amount ${transaction.type}`}>
+                {transaction.type === 'income' ? '+' : '-'}${transaction.amount}
+            </div>
+            <button 
+                onClick={() => dispatch(deleteTransaction(transaction._id))} 
+                className="close"
+            >
+                X
+            </button>
         </div>
     )
 }

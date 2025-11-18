@@ -16,13 +16,16 @@ const getTransactions = asyncHandler(async (req, res) => {
 // @route   POST /api/transactions
 // @access  Private
 const createTransaction = asyncHandler(async (req, res) => {
-    if(!req.body.text) {
+    if(!req.body.text || !req.body.amount || !req.body.type) {
         res.status(400)
-        throw new Error('Please add amount and type fields')
+        throw new Error('Please add text, amount and type fields')
     }
 
     const transaction = await Transaction.create({
         text: req.body.text,
+        amount: req.body.amount,
+        type: req.body.type,
+        category: req.body.category,
         user: req.user.id
     })
 
@@ -33,7 +36,7 @@ const createTransaction = asyncHandler(async (req, res) => {
 // @route   PUT /api/transactions/:id
 // @access  Private
 const updateTransaction = asyncHandler(async (req, res) => {
-const transaction = await Transaction.findById(req.params.id)
+    const transaction = await Transaction.findById(req.params.id)
 
     if(!transaction) {
         res.status(400)
@@ -61,7 +64,7 @@ const transaction = await Transaction.findById(req.params.id)
 // @route   DELETE /api/transactions/:id
 // @access  Private
 const deleteTransaction = asyncHandler(async (req, res) => {
-const transaction = await Transaction.findById(req.params.id)
+    const transaction = await Transaction.findById(req.params.id)
 
     if(!transaction) {
         res.status(400)
