@@ -11,9 +11,8 @@ Personal finance management application built with MERN stack.
 
 ## How to Run the Project
 
-# Clone and setup
-git clone https://github.com/JuliaChsherb/budget-tracker.git
+git clone <https link from the top>
+
 cd budget-tracker
 
-# Run both frontend and backend simultaneously
 npm run dev
