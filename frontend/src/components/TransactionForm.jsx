@@ -14,7 +14,6 @@ function TransactionForm() {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    // Автоматически определяем категорию на основе типа
     const defaultCategory = type === 'income' ? 'other-income' : 'other-expense'
 
     const transactionData = {
@@ -26,7 +25,6 @@ function TransactionForm() {
 
     dispatch(createTransaction(transactionData))
 
-    // Очищаем форму
     setText('')
     setAmount('')
   }
